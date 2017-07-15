@@ -1,43 +1,51 @@
-<script>
-    /* ACA VA LA IP DEL SERVIDOR */
-    var url = "192.168.1.105";
-</script>
+<html>
+    <head>
+        <script>
+            /* ACA VA LA IP DEL SERVIDOR */
+            var url = "192.168.1.105";
+        </script>
 
         <style type="text/css">
             body, html
             {
-                margin: 0; padding: 0; height: 100%; overflow: hidden;
+                margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: black;
+            }
+            iframe
+            {
+                background-color: black;
             }
 
             #content
             {
                 position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
             }
+
         </style>
+        <script src="./jquery.min.js"></script>
+    </head>
+    <body>
+        <iframe id="iframe" width="100%" height="100%" frameborder="0"  src=""></iframe>
+        <script>
+            var socket;
 
-<iframe id="iframe" width="100%" height="100%" frameborder="0"  src=""></iframe>
+            function connect() {
+                socket = new WebSocket('ws://' + url + ':8888' + '/socket');
 
-    <script src="./jquery.min.js"></script>
-<script>
+                socket.onmessage = function (msg) {
+                    console.log(msg);
+                    document.getElementById("iframe").src = msg.data;
+                };
+            }
 
+            window.onload = function () {
+                connect();
+            };
+
+            window.onbeforeunload = function () {
+                socket.close();
+            };
+        
+        </script>
+    </body>
+</html>
   
-var socket;
-
-function connect() {
-    socket = new WebSocket('ws://' + url + ':8888' + '/socket');
-
-    socket.onmessage = function (msg) {
-        console.log(msg);
-        document.getElementById("iframe").src = msg.data;
-    };
-}
-
-window.onload = function () {
-    connect();
-};
-
-window.onbeforeunload = function () {
-    socket.close();
-};
- 
-</script>

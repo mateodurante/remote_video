@@ -1,62 +1,74 @@
+<html>
+    <head>
+        <style type="text/css">
+            body, html
+            {
+                background-color: black;
+                color: white;
+            }
+        </style>
+        <script src="./jquery.min.js"></script>
+    </head>
+    <body>
+        Inicio URL: <input id="url_inicio" type="text" name="url_inicio" value="http://192.168.1.">
+        Fin URL: <input id="url_fin" type="text" name="url_fin" value=":8080/browserfs.html">
 
-Inicio URL: <input id="url_inicio" type="text" name="url_inicio" value="http://192.168.1.">
-Fin URL: <input id="url_fin" type="text" name="url_fin" value=":8080/browserfs.html">
+        <br>
+        <button id="addDiv">Agregar Video</button>
 
-<br>
-<button id="addDiv">Agregar Video</button>
+        <div name="video" id="video1">
+            <br>
+            <input id="url1_input" type="text" name="url1">
+            <button id="url1_button">Ver</button>
+            <button id="send1">SEND</button>
+            <br>
+            <iframe id="url1_iframe" src=""></iframe>
+            <br>
+        </div>
 
-<div name="video" id="video1">
-    <br>
-    <input id="url1_input" type="text" name="url1">
-    <button id="url1_button">Ver</button>
-    <button id="send1">SEND</button>
-    <br>
-    <iframe id="url1_iframe" src=""></iframe>
-    <br>
-</div>
+        <script>
 
-<script src="./jquery.min.js"></script>
-<script>
+        function addDiv() {
+            var myDiv = document.getElementById("video1");
+            var divClone = myDiv.cloneNode(true); // the true is for deep cloning
+            document.body.appendChild(divClone);
+        }
 
-function addDiv() {
-    var myDiv = document.getElementById("video1");
-    var divClone = myDiv.cloneNode(true); // the true is for deep cloning
-    document.body.appendChild(divClone);
-}
+        document.getElementById("addDiv").addEventListener("click", addDiv);
+        document.getElementById("url1_button").addEventListener("click", setIframe1);
 
-document.getElementById("addDiv").addEventListener("click", addDiv);
-document.getElementById("url1_button").addEventListener("click", setIframe1);
+        function setIframe1() {
+            document.getElementById("url1_iframe").src = url1();
+        }
 
-function setIframe1() {
-    document.getElementById("url1_iframe").src = url1();
-}
+        function url1() {
+            return document.getElementById("url_inicio").value + 
+                    document.getElementById("url1_input").value + 
+                    document.getElementById("url_fin").value;
+        }
 
-function url1() {
-    return document.getElementById("url_inicio").value + 
-            document.getElementById("url1_input").value + 
-            document.getElementById("url_fin").value;
-}
+        var socket,
+            url = "localhost:8888";
 
-var socket,
-    url = "localhost:8888";
+        function connect() {
+            socket = new WebSocket('ws://' + url + '/socket');
 
-function connect() {
-    socket = new WebSocket('ws://' + url + '/socket');
+            socket.onmessage = function (msg) {
+                console.log(msg);
+            };
+        }
 
-    socket.onmessage = function (msg) {
-        console.log(msg);
-    };
-}
+        window.onload = function () {
+            connect();
+        };
 
-window.onload = function () {
-    connect();
-};
+        window.onbeforeunload = function () {
+            socket.close();
+        };
+        $("#send1").click(function(evt) {
+                    socket.send(url1());
+                });
 
-window.onbeforeunload = function () {
-    socket.close();
-};
-$("#send1").click(function(evt) {
-            socket.send(url1());
-        });
-
-</script>
+        </script>
+    </body>
+</html>
