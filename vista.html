@@ -1,4 +1,7 @@
-
+<script>
+    /* ACA VA LA IP DEL SERVIDOR */
+    var url = "192.168.1.105";
+</script>
 
         <style type="text/css">
             body, html
@@ -12,17 +15,16 @@
             }
         </style>
 
-<iframe id="iframe" width="100%" height="100%" frameborder="0"  src="http://192.168.1.103:8080/browserfs.html"></iframe>
+<iframe id="iframe" width="100%" height="100%" frameborder="0"  src=""></iframe>
 
     <script src="./jquery.min.js"></script>
 <script>
 
   
-var socket,
-    url = "localhost:8888";
+var socket;
 
 function connect() {
-    socket = new WebSocket('ws://' + url + '/socket');
+    socket = new WebSocket('ws://' + url + ':8888' + '/socket');
 
     socket.onmessage = function (msg) {
         console.log(msg);
