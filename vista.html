@@ -3,6 +3,10 @@
         <script>
             /* ACA VA LA IP DEL SERVIDOR */
             var url = "192.168.1.105";
+            /* Delay para que aparezca el nuevo iframe */
+            var delay = 800;
+            /* efecto de entrada */
+            var fadeIn = 400;
         </script>
 
         <style type="text/css">
@@ -33,6 +37,8 @@
 
                 socket.onmessage = function (msg) {
                     console.log(msg);
+                    $("#iframe").fadeOut( 0 );
+                    $("#iframe").delay( 800 ).fadeIn( 400 );
                     document.getElementById("iframe").src = msg.data;
                 };
             }
