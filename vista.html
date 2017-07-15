@@ -5,8 +5,10 @@
             var url = "192.168.1.105";
             /* Delay para que aparezca el nuevo iframe */
             var delay = 800;
-            /* efecto de entrada */
+            /* efecto de aparicion */
             var fadeIn = 400;
+            /* efecto de desaparicion */
+            var fadeOut = 0;
         </script>
 
         <style type="text/css">
@@ -37,8 +39,8 @@
 
                 socket.onmessage = function (msg) {
                     console.log(msg);
-                    $("#iframe").fadeOut( 0 );
-                    $("#iframe").delay( 800 ).fadeIn( 400 );
+                    $("#iframe").fadeOut( fadeOut );
+                    $("#iframe").delay( delay ).fadeIn( fadeIn );
                     document.getElementById("iframe").src = msg.data;
                 };
             }
