@@ -1,0 +1,41 @@
+
+
+        <style type="text/css">
+            body, html
+            {
+                margin: 0; padding: 0; height: 100%; overflow: hidden;
+            }
+
+            #content
+            {
+                position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
+            }
+        </style>
+
+<iframe id="iframe" width="100%" height="100%" frameborder="0"  src="http://192.168.1.103:8080/browserfs.html"></iframe>
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+<script>
+
+  
+var socket,
+    url = "localhost:8888";
+
+function connect() {
+    socket = new WebSocket('ws://' + url + '/socket');
+
+    socket.onmessage = function (msg) {
+        console.log(msg);
+        document.getElementById("iframe").src = msg.data;
+    };
+}
+
+window.onload = function () {
+    connect();
+};
+
+window.onbeforeunload = function () {
+    socket.close();
+};
+ 
+</script>
